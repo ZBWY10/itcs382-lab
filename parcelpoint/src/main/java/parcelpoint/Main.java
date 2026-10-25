@@ -15,14 +15,20 @@ public class Main {
             if (words[0].equals("store")) {
                 Parcel parcel = new Parcel(words[1], words[2], ParcelSize.fromCode(Integer.parseInt(words[3])));
                 Locker locker = service.storeParcel(parcel);
-                System.out.println(locker == null ? "No free locker" : "Locker " + locker.getNumber());
+                if (locker == null) {
+                    System.out.println("No free locker");
+                } else {
+                    System.out.println("SMS to " + parcel.getStudentId() + ": parcel "
+                            + parcel.getCode() + " is in locker " + locker.getNumber());
+                    System.out.println("Locker " + locker.getNumber());
+                }
             } else if (words[0].equals("pickup")) {
                 System.out.println("Fee: " + service.pickUp(words[1], Integer.parseInt(words[2])));
             } else if (words[0].equals("list")) {
-                service.printParcels(false);
+                service.waitingParcelLines().forEach(System.out::println);
             } else if (words[0].equals("staff")) {
-                service.printParcels(true);
-                System.out.println("Free lockers: " + service.getLockers().stream().filter(Locker::isFree).count());
+                service.allParcelLines().forEach(System.out::println);
+                System.out.println("Free lockers: " + service.countFreeLockers());
             } else if (words[0].equals("quit")) {
                 break;
             }
