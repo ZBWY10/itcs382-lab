@@ -3,6 +3,9 @@ package parcelpoint;
 import java.util.Scanner;
 
 public class Main {
+    private Main() {
+    }
+
     public static void main(String[] args) {
         ParcelService service = new ParcelService();
         Scanner in = new Scanner(System.in);
